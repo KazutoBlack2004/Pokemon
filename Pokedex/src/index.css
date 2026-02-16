@@ -1,0 +1,5 @@
+@import "tailwindcss";
+
+.image {
+  filter: drop-shadow(0 0 20px rgba(3, 3, 3, 0.5));
+}
