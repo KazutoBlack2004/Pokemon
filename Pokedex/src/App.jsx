@@ -131,20 +131,23 @@ function App() {
   return (
     <div className="bg-gray-900 text-white min-h-screen">
       <h1 className="text-4xl font-bold text-center my-8">Pokédex</h1>
-      <div className="bg-white/10 grid grid-cols-2 p-4 mx-[10%] rounded-full p-3 shadow-2xl grid-cols-2 gap-5  flex items-center justify-between">
+      <div className="bg-white/10 grid grid-cols-1 p-4 mx-[10%] rounded-4xl p-3 shadow-2xl  gap-5  flex items-center justify-between mb-8">
         <PokeBusqueda
           value={searchTerm}
           onChange={setSearchTerm}
           allPokemons={allPokemons}
           onSelect={fetchPokemonByName}
+          className="w-full col-span-1"
         />
-        <PokeFiltro onFilterChange={fetchPokemonsPage}></PokeFiltro>
+        <PokeFiltro
+          className="w-full col-span-1"
+          onFilterChange={fetchPokemonsPage}></PokeFiltro>
       </div>
 
       {loading ? (
         <p className="text-center">Cargando Pokémon...</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 mx-[10%]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 p-4 mx-[10%]">
           {pokemons.map((pokemon) => (
             <PokeCard key={pokemon.id} pokemonData={pokemon} />
           ))}
