@@ -55,13 +55,10 @@ export default function PokeMenu({
 
   return (
     <div className="mx-[5%] md:mx-[10%] mb-10 relative">
-      {/* BARRA PRINCIPAL 
-        Añadimos z-50 para asegurar que sea la capa más alta de la app
-      */}
+      {/* BARRA PRINCIPAL
+       */}
       <div className="relative z-50 p-6 bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2.5rem] shadow-2xl flex flex-col lg:flex-row items-center justify-between gap-6">
-        {/* CONTENEDOR DE BÚSQUEDA 
-          Usamos z-index mayor aquí para que el dropdown de PokeBusqueda no se oculte tras el cristal
-        */}
+        {/* CONTENEDOR DE BÚSQUEDA */}
         <div className="w-full lg:flex-1 relative z-[60]">
           <PokeBusqueda
             value={searchTerm}
@@ -70,10 +67,8 @@ export default function PokeMenu({
             onSelect={fetchPokemonByName}
           />
         </div>
-
         <div className="flex items-center gap-4 w-full lg:w-auto relative z-50">
           <PokeFiltro sortOrder={sortOrder} setSortOrder={setSortOrder} />
-
           <button
             onClick={() => setIsOpen(!isOpen)}
             className={`flex items-center gap-2 px-5 py-3 rounded-xl font-bold transition-all ${
@@ -90,10 +85,7 @@ export default function PokeMenu({
           </button>
         </div>
       </div>
-
-      {/* PANEL AVANZADO 
-        Bajamos el z-index a 40 para que el buscador (z-60) pase por ENCIMA de este panel
-      */}
+      {/* PANEL AVANZADO */}
       <div
         className={`relative z-40 overflow-visible transition-all duration-500 ease-in-out ${
           isOpen
@@ -128,7 +120,6 @@ export default function PokeMenu({
                 ))}
               </div>
             </div>
-
             {/* 2. Filtro por Estadísticas */}
             <div className="space-y-4 border-l border-white/5 pl-0 xl:pl-8">
               <h3 className="text-yellow-400 text-sm font-black uppercase tracking-widest flex items-center gap-2">
@@ -152,7 +143,7 @@ export default function PokeMenu({
               </div>
               {sortStat && (
                 <p className="text-[10px] text-blue-400 font-bold animate-pulse uppercase">
-                  ⭐ Mostrando los más fuertes en {sortStat}
+                  Mostrando los más fuertes en {sortStat}
                 </p>
               )}
             </div>

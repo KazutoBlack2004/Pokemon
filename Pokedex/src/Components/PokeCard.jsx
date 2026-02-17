@@ -94,15 +94,19 @@ export default function PokeCard({ pokemonData, onClick }) {
           ))}
         </div>
       </div>
-
       <div className="relative h-40 flex items-center justify-center mb-4">
         <div
           className={`absolute inset-0 blur-3xl opacity-20 rounded-full ${typeColors[pokemonData.types[0].type.name]}`}></div>
         <img
           src={imageUrl}
           alt={pokemonData.name}
-          className={`relative z-10 w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 
-            ${isShiny ? "drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]" : "drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)]"}`}
+          className="relative z-10 w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"
+          style={{
+            filter: isShiny
+              ? "drop-shadow(0 0 10px rgba(255,255,255,0.5))"
+              : "drop-shadow(0 12px 12px rgba(0,0,0,0.5))",
+            willChange: "filter",
+          }}
         />
       </div>
 

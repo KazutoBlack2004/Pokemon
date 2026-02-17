@@ -1,14 +1,94 @@
 @import "tailwindcss";
 
-.image {
-  filter: drop-shadow(0 0 20px rgba(3, 3, 3, 0.5));
+/* --- Variables y Reset --- */
+:root {
+  color-scheme: dark;
 }
+
+body {
+  margin: 0;
+  background-color: #030712;
+  color: white;
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
+  scroll-behavior: smooth;
+}
+
+/* --- PERSONALIZACIÓN DEL SCROLLBAR --- */
+/* Tamaño del scroll */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+/* Fondo del scroll (Track) */
+::-webkit-scrollbar-track {
+  background: #030712;
+}
+
+/* La barra que se mueve (Thumb) */
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  border: 2px solid #030712; /* Crea un efecto de separación */
+}
+
+/* Cuando pasas el mouse por encima */
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.5); /* Color azul como tus acentos */
+}
+
+/* --- MEJORA DE LA NAVEGACIÓN FLOTANTE --- */
+.nav-container {
+  /* Para que la cápsula no toque los bordes de la pantalla */
+  padding: 1.5rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  pointer-events: none; /* Permite que el scroll funcione debajo */
+}
+
+.nav-glass-capsule {
+  pointer-events: auto; /* Reactiva los clics dentro de la barra */
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1.5rem;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 100px; /* Forma de cápsula perfecta */
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Efecto de elevación al hacer foco en el buscador */
+.nav-glass-capsule:focus-within {
+  background: rgba(15, 23, 42, 0.9);
+  border-color: rgba(59, 130, 246, 0.5);
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.2);
+  transform: translateY(-2px);
+}
+
+/* --- Animaciones y Fondos (Tus actuales mejorados) --- */
+.image {
+  /* Filtro optimizado para evitar la línea que mencionamos antes */
+  filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
+  will-change: transform, filter;
+}
+
 @keyframes slow-spin {
   from {
-    transform: rotate(0deg);
+    transform: translate(-50%, -50%) rotate(0deg);
   }
   to {
-    transform: rotate(360deg);
+    transform: translate(-50%, -50%) rotate(360deg);
   }
 }
 
@@ -19,9 +99,9 @@
     radial-gradient(at 100% 100%, rgba(30, 58, 138, 0.15) 0, transparent 50%);
   position: relative;
   overflow-x: hidden;
+  min-height: 100vh;
 }
 
-/* El patrón de Pokéballs sutil */
 .pokemon-bg::before {
   content: "";
   position: fixed;
@@ -30,9 +110,9 @@
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M50 10A40 40 0 1 0 50 90A40 40 0 1 0 50 10Z' fill='none' stroke='%23fff' stroke-width='2'/%3E%3Cline x1='10' y1='50' x2='90' y2='50' stroke='%23fff' stroke-width='2'/%3E%3Ccircle cx='50' cy='50' r='10' fill='none' stroke='%23fff' stroke-width='2'/%3E%3C/svg%3E");
   background-size: 60px 60px;
+  z-index: 0;
 }
 
-/* Un brillo dinámico que sigue al scroll o se mueve suavemente */
 .bg-glow {
   position: fixed;
   top: 50%;
@@ -41,11 +121,25 @@
   height: 800px;
   background: radial-gradient(
     circle,
-    rgba(59, 130, 246, 0.05) 0%,
+    rgba(59, 130, 246, 0.06) 0%,
     transparent 70%
   );
-  transform: translate(-50%, -50%);
   pointer-events: none;
   z-index: 0;
-  animation: slow-spin 20s linear infinite;
+  animation: slow-spin 25s linear infinite;
+}
+
+/* --- Utilidades Extras --- */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Suavizado para las imágenes de los Pokémon */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  backface-visibility: hidden;
 }
