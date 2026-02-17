@@ -1,80 +1,105 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
-/*
-  value        → valor actual de búsqueda (viene del padre)
-  onChange     → setter del padre (App)
-  allPokemons  → lista completa de Pokémon (solo nombre + url)
-  onSelect     → qué hacer cuando se elige un Pokémon
-  delay        → debounce
-*/
 export default function PokeBusqueda({
   value,
   onChange,
   allPokemons = [],
   onSelect,
-  delay = 500,
+  delay = 400,
 }) {
   const [localValue, setLocalValue] = useState(value);
   const [suggestions, setSuggestions] = useState([]);
   const [activeIndex, setActiveIndex] = useState(-1);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const wrapperRef = useRef(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       onChange(localValue);
     }, delay);
-
     return () => clearTimeout(timer);
   }, [localValue, delay, onChange]);
 
   useEffect(() => {
-    if (localValue.trim() === "") {
+    const handleClickOutside = (e) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+        setShowSuggestions(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    const query = localValue.toLowerCase().trim();
+    if (query === "") {
       setSuggestions([]);
-      setActiveIndex(-1);
       return;
     }
 
-    const filtered = allPokemons.filter((pokemon) =>
-      pokemon.name.includes(localValue.toLowerCase()),
-    );
+    const filtered = allPokemons
+      .filter((p) => p.name.includes(query))
+      .sort((a, b) => {
+        const aStarts = a.name.startsWith(query) ? -1 : 1;
+        const bStarts = b.name.startsWith(query) ? -1 : 1;
+        return aStarts - bStarts;
+      })
+      .slice(0, 8);
 
-    setSuggestions(filtered.slice(0, 8));
-    setActiveIndex(-1);
+    setSuggestions(filtered);
+    setShowSuggestions(true);
   }, [localValue, allPokemons]);
+
+  const handleSelect = (name) => {
+    setLocalValue(name);
+    onSelect(name);
+    setShowSuggestions(false);
+    setActiveIndex(-1);
+  };
+
   const handleKeyDown = (e) => {
     if (!suggestions.length) return;
 
     if (e.key === "ArrowDown") {
-      setActiveIndex((prev) => Math.min(prev + 1, suggestions.length - 1));
-    }
-
-    if (e.key === "ArrowUp") {
-      setActiveIndex((prev) => Math.max(prev - 1, 0));
-    }
-
-    if (e.key === "Enter" && activeIndex >= 0) {
-      onSelect(suggestions[activeIndex].name);
-      setSuggestions([]);
+      e.preventDefault();
+      setActiveIndex((prev) =>
+        prev < suggestions.length - 1 ? prev + 1 : prev,
+      );
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setActiveIndex((prev) => (prev > 0 ? prev - 1 : 0));
+    } else if (e.key === "Enter") {
+      if (activeIndex >= 0) {
+        handleSelect(suggestions[activeIndex].name);
+      } else if (suggestions.length > 0) {
+        handleSelect(suggestions[0].name);
+      }
+    } else if (e.key === "Escape") {
+      setShowSuggestions(false);
     }
   };
 
   const highlight = (name) => {
-    const index = name.indexOf(localValue.toLowerCase());
-    if (index === -1) return name;
-
+    const query = localValue.toLowerCase();
+    const parts = name.split(new RegExp(`(${query})`, "gi"));
     return (
       <>
-        {name.slice(0, index)}
-        <span className="highlight">
-          {name.slice(index, index + localValue.length)}
-        </span>
-        {name.slice(index + localValue.length)}
+        {parts.map((part, i) =>
+          part.toLowerCase() === query ? (
+            <span key={i} className="highlight">
+              {part}
+            </span>
+          ) : (
+            part
+          ),
+        )}
       </>
     );
   };
 
   return (
-    <div className="w-full relative">
+    <div className="w-full relative" ref={wrapperRef}>
       <StyledWrapper>
         <div className="searchBox">
           <input
@@ -82,33 +107,33 @@ export default function PokeBusqueda({
             type="text"
             placeholder="Busca tu Pokémon..."
             value={localValue}
+            onFocus={() => localValue && setShowSuggestions(true)}
             onChange={(e) => setLocalValue(e.target.value)}
             onKeyDown={handleKeyDown}
           />
 
-          <button className="searchButton" type="button">
+          <button
+            className="searchButton"
+            type="button"
+            onClick={() =>
+              suggestions.length > 0 && handleSelect(suggestions[0].name)
+            }>
             <img
               src="https://cdn.pixabay.com/photo/2019/11/27/14/06/pokemon-4657023_640.png"
               alt="Buscar"
-              onClick={() => {
-                if (suggestions.length > 0) {
-                  onSelect(suggestions[0].name);
-                  setSuggestions([]);
-                }
-              }}
             />
           </button>
         </div>
-        {suggestions.length > 0 && (
-          <ul className="suggestions">
+
+        {showSuggestions && suggestions.length > 0 && (
+          <ul className="suggestions" role="listbox">
             {suggestions.map((pokemon, index) => (
               <li
                 key={pokemon.name}
+                role="option"
+                aria-selected={index === activeIndex}
                 className={index === activeIndex ? "active" : ""}
-                onClick={() => {
-                  onSelect(pokemon.name);
-                  setSuggestions([]);
-                }}>
+                onClick={() => handleSelect(pokemon.name)}>
                 {highlight(pokemon.name)}
               </li>
             ))}
