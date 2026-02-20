@@ -1,12 +1,27 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Pokédex || Prueba</title>
-    <!--GOGLE ANALITICS-->
-    <!-- Google tag (gtag.js) -->
+    <meta
+      name="description"
+      content="Una Pokédex moderna desarrollada con React. Explora estadísticas, habilidades, evoluciones y detalles técnicos de todos los Pokémon." />
+    <meta
+      name="keywords"
+      content="Pokemon, Pokedex, React, PokeAPI, Desarrollo Web, Frontend" />
+    <meta name="author" content="Kazuto_Black" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#3b82f6" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://pokemon-e66b.onrender.com" />
+    <meta property="og:title" content="Pokédex || Prueba" />
+    <meta
+      property="og:description"
+      content="Estadísticas en tiempo real, variantes Shiny y cadenas evolutivas completas." />
+
     <script
       async
       src="https://www.googletagmanager.com/gtag/js?id=G-CV0H744CRC"></script>
@@ -16,13 +31,27 @@
         dataLayer.push(arguments);
       }
       gtag("js", new Date());
-
       gtag("config", "G-CV0H744CRC");
     </script>
   </head>
   <body>
+    <a
+      href="#root"
+      style="
+        position: absolute;
+        left: -10000px;
+        top: auto;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+      "
+      >Saltar al contenido</a
+    >
+
     <div id="root"></div>
+
     <div id="modal-root"></div>
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
