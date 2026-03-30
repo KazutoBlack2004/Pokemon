@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import PokemonExplorer from "./Pages/PokemonExplorer";
+import ItemExplorer from "./Pages/ItemsExplorer";
 import Navbar from "./Components/Layout/NavBar";
 import Footer from "./Components/Layout/Footer";
 import "./index.css";
@@ -13,15 +14,7 @@ function App() {
         <div className="flex-grow">
           <Routes>
             <Route path="/" element={<PokemonExplorer />} />
-            {/* Aquí irán tus futuras rutas: Items, Berries, etc. */}
-            <Route
-              path="/items"
-              element={
-                <div className="text-center py-40 opacity-20 uppercase font-black tracking-widest">
-                  Sección Ítems en desarrollo
-                </div>
-              }
-            />
+            <Route path="/items" element={<ItemExplorer />} />
             <Route
               path="/berries"
               element={

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Sparkles, Volume2 } from "lucide-react";
-import "../index.css";
+import "../../index.css";
 
 export default function PokeCard({ pokemonData, onClick }) {
   const [isShiny, setIsShiny] = useState(false);

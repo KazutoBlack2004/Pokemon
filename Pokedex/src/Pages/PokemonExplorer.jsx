@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import PokeCard from "../Components/PokeCard";
-import PokeMenu from "../Components/PokeMenu";
-import PokeModal from "../Components/PokeModal";
+import PokeCard from "../Components/Pokemon/PokeCard";
+import PokeMenu from "../Components/Pokemon/PokeMenu";
+import PokeModal from "../Components/Pokemon/PokeModal";
+import Loading from "../Components/ui/Loading";
 
 const LIMIT = 20;
 
@@ -203,13 +204,7 @@ function PokemonExplorer() {
               ))}
             </div>
 
-            {pokemons.length === 0 && (
-              <div className="text-center py-20 opacity-50">
-                <p className="text-xl font-bold uppercase tracking-tight">
-                  Sin resultados
-                </p>
-              </div>
-            )}
+            {pokemons.length === 0 && <Loading color="red" />}
 
             {totalPages > 1 && (
               <div className="flex justify-center items-center gap-4 mt-20">
